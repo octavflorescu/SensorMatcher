@@ -19,14 +19,17 @@ struct point {
     float x, y;
     
     bool isBetweenPoints(point p1, point p2) {
+        bool isBetweenOnX = ((p1.x <= x) && (p2.x >= x)) || ((p1.x >= x) && (p2.x <= x));
+        bool isBetweenOnY = ((p1.y <= y) && (p2.y >= y)) || ((p1.y >= y) && (p2.y <= y));
+        
         if (p1.x == p2.x) {
-            return ((p1.y < y) && (p2.y > y)) || ((p1.y > y) && (p2.y < y));
+            return isBetweenOnY;
         }
         if (p1.y == p2.y) {
-            return ((p1.x < x) && (p2.x > x)) || ((p1.x > x) && (p2.x < x));
+            return isBetweenOnX;
         }
         // match the gradients
-        return (p1.x - x) * (p1.y - y) == (x - p2.x) * (y - p2.y);
+        return isBetweenOnX && isBetweenOnY;
     }
 };
 

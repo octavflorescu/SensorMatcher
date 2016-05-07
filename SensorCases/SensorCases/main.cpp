@@ -32,10 +32,10 @@ int main(int argc, const char * argv[]) {
         Line("2", {-3.5, 0}, {0, 20}),
         Line("3", {0, 0}, {0, 20}),
         Line("4", {3.5, 0}, {0, 20}),
-        Line("5", {8, 0}, {8, 20}),
-        Line("a", {-8, 0}, {-8, 20}),
-        Line("b", {-8, 0}, {-8, 20}),
-        Line("c", {-8, 0}, {-8, 20})
+        Line("5", {8, 0}, {8, 20})//,
+//        Line("a", {-8, 0}, {-8, 20}),
+//        Line("b", {-8, 0}, {-8, 20}),
+//        Line("c", {-8, 0}, {-8, 20})
     };
     unsigned int numberOfLines = sizeof(lines) / sizeof(Line);
     

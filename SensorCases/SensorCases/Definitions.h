@@ -34,11 +34,13 @@ struct point {
 };
 
 struct square20 {
-    point p1, p2, p3, p4;
+    point p1, p2, p3, p4, c;
     
     square20();
     
     square20(point center) {
+        c = center;
+        
         p1 = {static_cast<float>(center.x - (kRobotSize / 2.0)),
             static_cast<float>(center.y + kRobotSize / 2.0)};
         p2 = {static_cast<float>(center.x + kRobotSize / 2.0),
@@ -52,34 +54,42 @@ struct square20 {
     void rotateAtAngle(float angle)
     {
         float s = sin(angle);
-        float c = cos(angle);
+        float cZ = cos(angle);
         
         float xnew;
         float ynew;
         
         // rotate point 1
-        xnew = p1.x * c - p1.y * s;
-        ynew = p1.x * s + p1.y * c;
-        p1.x = xnew;
-        p1.y = ynew;
+        p1.x = p1.x - c.x;
+        p1.y = p1.y - c.y;
+        xnew = p1.x * cZ - p1.y * s;
+        ynew = p1.x * s + p1.y * cZ;
+        p1.x = xnew + c.x;
+        p1.y = ynew + c.y;
         
         // rotate point 2
-        xnew = p2.x * c - p2.y * s;
-        ynew = p2.x * s + p2.y * c;
-        p2.x = xnew;
-        p2.y = ynew;
+        p2.x = p2.x - c.x;
+        p2.y = p2.y - c.y;
+        xnew = p2.x * cZ - p2.y * s;
+        ynew = p2.x * s + p2.y * cZ;
+        p2.x = xnew + c.x;
+        p2.y = ynew + c.y;
         
         // rotate point 3
-        xnew = p3.x * c - p3.y * s;
-        ynew = p3.x * s + p3.y * c;
-        p3.x = xnew;
-        p3.y = ynew;
+        p3.x = p3.x - c.x;
+        p3.y = p3.y - c.y;
+        xnew = p3.x * cZ - p3.y * s;
+        ynew = p3.x * s + p3.y * cZ;
+        p3.x = xnew + c.x;
+        p3.y = ynew + c.y;
         
         // rotate point 4
-        xnew = p4.x * c - p4.y * s;
-        ynew = p4.x * s + p4.y * c;
-        p4.x = xnew;
-        p4.y = ynew;
+        p4.x = p4.x - c.x;
+        p4.y = p4.y - c.y;
+        xnew = p4.x * cZ - p4.y * s;
+        ynew = p4.x * s + p4.y * cZ;
+        p4.x = xnew + c.x;
+        p4.y = ynew + c.y;
     }
 };
 

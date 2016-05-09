@@ -59,6 +59,11 @@ bool Line::intersectsSquare(square20 sq) {
         if (intersection.isBetweenPoints(sq.p1, sq.p2)) {
             return true;
         }
+    } else if (isfinite(intercept)) {
+        intersection = variableLine.intersectionPoint(*this);
+        if (intersection.isBetweenPoints(sq.p1, sq.p2)) {
+            return true;
+        }
     }
     
     variableLine = Line("", sq.p2, sq.p3);
@@ -66,6 +71,11 @@ bool Line::intersectsSquare(square20 sq) {
         return true;
     } else if (isfinite(variableLine.intercept)) {
         intersection = intersectionPoint(variableLine);
+        if (intersection.isBetweenPoints(sq.p2, sq.p3)) {
+            return true;
+        }
+    } else if (isfinite(intercept)) {
+        intersection = variableLine.intersectionPoint(*this);
         if (intersection.isBetweenPoints(sq.p2, sq.p3)) {
             return true;
         }
@@ -79,6 +89,11 @@ bool Line::intersectsSquare(square20 sq) {
         if (intersection.isBetweenPoints(sq.p3, sq.p4)) {
             return true;
         }
+    } else if (isfinite(intercept)) {
+        intersection = variableLine.intersectionPoint(*this);
+        if (intersection.isBetweenPoints(sq.p3, sq.p4)) {
+            return true;
+        }
     }
     
     variableLine = Line("", sq.p4, sq.p1);
@@ -86,6 +101,11 @@ bool Line::intersectsSquare(square20 sq) {
         return true;
     } else if (isfinite(variableLine.intercept)) {
         intersection = intersectionPoint(variableLine);
+        if (intersection.isBetweenPoints(sq.p4, sq.p1)) {
+            return true;
+        }
+    } else if (isfinite(intercept)) {
+        intersection = variableLine.intersectionPoint(*this);
         if (intersection.isBetweenPoints(sq.p4, sq.p1)) {
             return true;
         }

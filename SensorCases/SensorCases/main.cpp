@@ -42,11 +42,77 @@ string stringFromLines(vector<Line> lines) {
     return cKey;
 }
 
+point pointMinY(point points[], int nop) {
+    point rez = {(float)INT_MAX, (float)INT_MAX};
+    point givenPoint;
+    
+    for (int i = 0; i < nop; i++) {
+        givenPoint = points[i];
+        
+        if (givenPoint.y < rez.y) {
+            rez = givenPoint;
+        }
+    }
+    return rez;
+}
+
+point pointMaxY(point points[], int nop) {
+    point rez = {(float)INT_MIN, (float)INT_MIN};
+    point givenPoint;
+    
+    for (int i = 0; i < nop; i++) {
+        givenPoint = points[i];
+        
+        if (givenPoint.y > rez.y) {
+            rez = givenPoint;
+        }
+    }
+    return rez;
+}
+
+point pointMinX(point points[], int nop) {
+    point rez = {(float)INT_MAX, (float)INT_MAX};
+    point givenPoint;
+    
+    for (int i = 0; i < nop; i++) {
+        givenPoint = points[i];
+        
+        if (givenPoint.x < rez.x) {
+            rez = givenPoint;
+        }
+    }
+    return rez;
+}
+
+point pointMaxX(point points[], int nop) {
+    point rez = {(float)INT_MIN, (float)INT_MIN};
+    point givenPoint;
+    
+    for (int i = 0; i < nop; i++) {
+        givenPoint = points[i];
+        
+        if (givenPoint.x > rez.x) {
+            rez = givenPoint;
+        }
+    }
+    return rez;
+}
+
 bool isSquareValid(square20 sq) {
     if ((sq.p1.y < 0 && sq.p1.x < kSelfMargin && sq.p1.x > -kSelfMargin)
         || (sq.p2.y < 0 && sq.p2.x < kSelfMargin && sq.p2.x > -kSelfMargin)
         || (sq.p3.y < 0 && sq.p3.x < kSelfMargin && sq.p3.x > -kSelfMargin)
         || (sq.p4.y < 0 && sq.p4.x < kSelfMargin && sq.p4.x > -kSelfMargin)) {
+        return false;
+    }
+    //check if the self top corners are inside the given square
+    point points[] = {sq.p1, sq.p2, sq.p3, sq.p4};
+    point minLeft = pointMinX(points, 4);
+    point minBottom = pointMinY(points, 4);
+    point maxRight = pointMaxX(points, 4);
+    
+    if ((minLeft.x < kSelfMargin && maxRight.x > kSelfMargin && minBottom.y < 0)
+        || (minLeft.x < -kSelfMargin && maxRight.x > -kSelfMargin && minBottom.y < 0)) {
         return false;
     }
     return true;
@@ -140,7 +206,7 @@ map<string, vector<vector<point>>> findSubCases() {
                     distanceX = pow(square.c.x - pointOfSubCase.x, 2);
                     distanceY = pow(square.c.y - pointOfSubCase.y, 2);
                     
-                    if (sqrt(distanceX + distanceY) <= kSelfMargin) {
+                    if (sqrt(distanceX + distanceY) <= kSelfMargin * sqrt(2)) {
                         didAddToExistentSubCase = true;
                         subcaseVals.push_back(square.c);
                         
@@ -193,10 +259,10 @@ map<string, vector<square20>> convertToVisualCases(map<string, vector<vector<poi
                 if (pointOfSubCase.x <= rezSquare.p1.x && pointOfSubCase.y > rezSquare.p1.y) {
                     rezSquare.p1 = pointOfSubCase;
                 }
-                if (pointOfSubCase.x >= rezSquare.p2.x && pointOfSubCase.y < rezSquare.p2.y) {
+                if (pointOfSubCase.x >= rezSquare.p2.x && pointOfSubCase.y > rezSquare.p2.y) {
                     rezSquare.p2 = pointOfSubCase;
                 }
-                if (pointOfSubCase.x >= rezSquare.p3.x && pointOfSubCase.y > rezSquare.p3.y) {
+                if (pointOfSubCase.x >= rezSquare.p3.x && pointOfSubCase.y < rezSquare.p3.y) {
                     rezSquare.p3 = pointOfSubCase;
                 }
                 if (pointOfSubCase.x <= rezSquare.p4.x && pointOfSubCase.y < rezSquare.p4.y) {
@@ -256,12 +322,9 @@ int main(int argc, const char * argv[]) {
             decideAddVecLineWithSquare(vecLine, square);
             
             // rotate square
-            for (float k = 0.1; k <= 1.7; k += 0.2) {
+            for (float k = 0.1; k <= 2.1; k += 0.2) {
                 square.rotateAtAngle(0.2);
                 
-                if ((int)square.p1.x == -36 && (int)square.p1.y == 14 && (int)square.p3.x == -7 && (int)square.p3.y == 15) {
-                    cout << "s";
-                }
                 vecLine = linesWhichPassSquare(square);
                 decideAddVecLineWithSquare(vecLine, square);
             }

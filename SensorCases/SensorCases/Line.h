@@ -119,12 +119,12 @@ point Line::intersectionPoint(Line l2) {
     
     if (isfinite(intercept)) {
         x.x = (l2.intercept - intercept) / (slope - l2.slope);
-        x.y = (slope * intercept - l2.intercept * l2.slope) / (slope - l2.slope);
-        
+//        x.y = (slope * intercept - l2.intercept * l2.slope) / (slope - l2.slope);
     } else {
         x.x = slope;
-        x.y = l2.slope * x.x + l2.intercept;
     }
+    x.y = l2.slope * x.x + l2.intercept;
+    
     return x;
 }
 

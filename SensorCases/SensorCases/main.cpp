@@ -26,7 +26,7 @@ Line lines[] = {
     Line("4", {3.725, 0}, {-9, 69}),
     Line("5", {8, 0}, {8, 24.5}),
     Line("a", {-4, 0}, {-9, 12}),
-    Line("b", {0, 0}, {0, 20}),
+    Line("b", {0, 0}, {0, 20}), // not added to the short byte
     Line("c", {4, 0}, {9, 8})
 };
 unsigned int numberOfLines = sizeof(lines) / sizeof(Line);
@@ -114,6 +114,7 @@ map<string, vector<vector<point>>> findSubCases() {
             subCasesValues.push_back(subcaseVals);
         }
         
+        float distanceX, distanceY;
         
         for (int i = 1; i < squares.size(); i++) {
             square = squares[i];
@@ -132,15 +133,21 @@ map<string, vector<vector<point>>> findSubCases() {
             
             for (int j = 0; j < subCasesValues.size(); j++) {
                 subcaseVals = subCasesValues[j];
-                pointOfSubCase = subcaseVals.back();
                 
-                if (pointOfSubCase.x + kRobotSize / 4 > square.c.x && pointOfSubCase.y + kRobotSize / 4 > square.c.y ) {
-                    didAddToExistentSubCase = true;
-                    subcaseVals.push_back(square.c);
+                for (int k = 0; k < subcaseVals.size(); k++) {
+                    pointOfSubCase = subcaseVals[k];
                     
-                    subCasesValues[j] = subcaseVals;
+                    distanceX = pow(square.c.x - pointOfSubCase.x, 2);
+                    distanceY = pow(square.c.y - pointOfSubCase.y, 2);
                     
-                    break;
+                    if (sqrt(distanceX + distanceY) <= kSelfMargin) {
+                        didAddToExistentSubCase = true;
+                        subcaseVals.push_back(square.c);
+                        
+                        subCasesValues[j] = subcaseVals;
+                        
+                        break;
+                    }
                 }
             }
             if (!didAddToExistentSubCase) {
@@ -252,6 +259,9 @@ int main(int argc, const char * argv[]) {
             for (float k = 0.1; k <= 1.7; k += 0.2) {
                 square.rotateAtAngle(0.2);
                 
+                if ((int)square.p1.x == -36 && (int)square.p1.y == 14 && (int)square.p3.x == -7 && (int)square.p3.y == 15) {
+                    cout << "s";
+                }
                 vecLine = linesWhichPassSquare(square);
                 decideAddVecLineWithSquare(vecLine, square);
             }
@@ -267,7 +277,7 @@ int main(int argc, const char * argv[]) {
         
         vector<square20> caseVal = it->second;
         
-        cout << caseVal.size() << ", [";
+        cout << "{" << caseVal.size() << ", {";
         for (int i = 0; i < caseVal.size(); i++) {
             square = caseVal[i];
             cout << "{" << square.c.x << ", " << square.c.y << "}";
@@ -276,7 +286,7 @@ int main(int argc, const char * argv[]) {
                 cout << ", ";
             }
         }
-        cout << "]\n";
+        cout << "}};\n";
     }
     
     

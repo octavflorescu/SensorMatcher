@@ -26,7 +26,7 @@ Line lines[] = {
     Line("4", {3.725, 0}, {-9, 69}),
     Line("5", {8, 0}, {8, 24.5}),
     Line("a", {-4, 0}, {-9, 12}),
-//    Line("b", {0, 0}, {0, 20}),
+    Line("b", {0, 0}, {0, 20}),
     Line("c", {4, 0}, {9, 8})
 };
 unsigned int numberOfLines = sizeof(lines) / sizeof(Line);
@@ -206,6 +206,27 @@ map<string, vector<square20>> convertToVisualCases(map<string, vector<vector<poi
     return rezMap;
 }
 
+string convertStringToByteString(string stringToConvert) {
+    string rez = "0b";
+    string shortString = "";
+    
+    for (int i = 0 ; i < numberOfLines; i++) {
+        if (stringToConvert.find(lines[i].getLineID()) != std::string::npos) {
+            if (lines[i].getLineID() == "b") {
+                shortString += "0";
+            } else {
+                shortString += "1";
+            }
+        } else {
+            shortString += "0";
+        }
+    }
+    reverse(shortString.begin(), shortString.end());
+    rez += shortString;
+    
+    return rez;
+}
+
 
 // MAIN //
 
@@ -239,6 +260,25 @@ int main(int argc, const char * argv[]) {
     
     map<string, vector<vector<point>>> subCases = findSubCases();
     map<string, vector<square20>> visualCases = convertToVisualCases(subCases);
+    vector<square20> caseVal;
+    
+    for (std::map<string, vector<square20>>::iterator it=visualCases.begin(); it!=visualCases.end(); ++it) {
+        cout << convertStringToByteString(it->first) << ", ";// <<it->first<<" ";
+        
+        vector<square20> caseVal = it->second;
+        
+        cout << caseVal.size() << ", [";
+        for (int i = 0; i < caseVal.size(); i++) {
+            square = caseVal[i];
+            cout << "{" << square.c.x << ", " << square.c.y << "}";
+            
+            if (i < caseVal.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]\n";
+    }
+    
     
     return 0;
 }

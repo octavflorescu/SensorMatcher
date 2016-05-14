@@ -31,12 +31,24 @@ struct point {
         // match the gradients
         return isBetweenOnX && isBetweenOnY;
     }
+    
+    friend bool operator==(const point lhs, const point rhs) {
+        return lhs.x == rhs.x && lhs.y == rhs.y;
+    }
 };
 
 struct square20 {
     point p1, p2, p3, p4, c;
     
     square20();
+    
+    square20(point point1, point point2, point point3, point point4, point center) {
+        p1 = point1;
+        p2 = point2;
+        p3 = point3;
+        p4 = point4;
+        c = center;
+    }
     
     square20(point center) {
         c = center;
